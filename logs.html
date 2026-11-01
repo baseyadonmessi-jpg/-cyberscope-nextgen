@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b18">
+  <title>CYBERSCOPE — Analyse des journaux</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .log-workspace { max-width: 1100px; margin: 32px auto; }
+    .log-panel {
+      background: rgba(20, 24, 48, .85);
+      border: 1px solid rgba(139, 92, 246, .35);
+      border-radius: 18px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+    .log-panel textarea {
+      width: 100%;
+      min-height: 260px;
+      box-sizing: border-box;
+      background: #090d1d;
+      color: #e8eaff;
+      border: 1px solid #343b65;
+      border-radius: 12px;
+      padding: 16px;
+      resize: vertical;
+      font: 14px/1.6 monospace;
+    }
+    .log-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .log-controls input {
+      width: 90px;
+      padding: 12px;
+      color: #fff;
+      background: #090d1d;
+      border: 1px solid #343b65;
+      border-radius: 8px;
+    }
+    .log-message { margin: 16px 0; color: #aab5d8; overflow-wrap: anywhere; }
+    .log-alert {
+      padding: 16px;
+      margin: 12px 0;
+      background: #10162c;
+      border: 1px solid #343b65;
+      border-radius: 12px;
+      overflow-wrap: anywhere;
+    }
+    .log-alert.high { border-left: 4px solid #fb7185; }
+    .log-alert.medium { border-left: 4px solid #fbbf24; }
+    .log-alert strong { display: block; margin-bottom: 8px; }
+    .log-alert p { margin: 6px 0; color: #c3cbe5; }
+    .log-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .log-button {
+      display: inline-block;
+      padding: 12px 18px;
+      color: white;
+      background: #6548df;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .log-button:disabled { opacity: .5; cursor: wait; }
+    .log-back { color: #a9b8ff; }
+    .log-note { color: #9da9cb; font-size: .9rem; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <main class="log-workspace">
+    <p><a class="log-back" href="index.html">← Retour au tableau de bord</a></p>
+
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">CYBERSCOPE NEXT GEN · OUTIL 02</div>
+        <h1>Analyse des <span>journaux</span></h1>
+        <p>Détection défensive d'événements inhabituels.</p>
+      </div>
+      <div class="top-badge"><span></span> MOTEUR PYTHON</div>
+    </header>
+
+    <section class="log-panel">
+      <h2>Source des données</h2>
+      <p class="log-note">
+        Colle un journal que tu es autorisé à examiner. Le contenu sera envoyé
+        à ton serveur local sur cet appareil, pas à un service externe.
+      </p>
+
+      <label for="logFile">Importer un fichier texte :</label>
+      <input id="logFile" type="file" accept=".log,.txt,text/plain">
+
+      <p><label for="logInput">Contenu du journal :</label></p>
+      <textarea id="logInput" spellcheck="false"
+        placeholder="Colle ici les lignes de ton journal de sécurité..."></textarea>
+
+      <div class="log-controls">
+        <label for="engineVersion">Moteur d'analyse :</label>
+        <select id="engineVersion">
+          <option value="v1">V1 — moteur classique</option>
+          <option value="v2">V2 — moteur amélioré</option>
+        </select>
+        <label for="threshold">Seuil d'échecs :</label>
+        <input id="threshold" type="number" min="1" max="1000" value="5">
+        <button id="runAnalysis" class="log-button" type="button">
+          Lancer l'analyse
+        </button>
+        <button id="downloadReport" class="log-button" type="button" disabled>
+          Télécharger le rapport JSON
+        </button>
+      </div>
+
+      <p id="logStatus" class="log-message" role="status" aria-live="polite">
+        En attente d'un journal.
+      </p>
+    </section>
+
+    <section class="log-panel">
+      <h2>Résumé des résultats</h2>
+      <div id="logSummary" class="log-message">Aucune analyse effectuée.</div>
+      <h3>Alertes</h3>
+      <div id="logAlerts"></div>
+      <h3>Recommandations de sécurité</h3>
+      <ul id="logRecommendations" class="log-note"></ul>
+      <h3>Limites de l'analyse</h3>
+      <ul id="logLimitations" class="log-note"></ul>
+    </section>
+  </main>
+
+  <script src="js/history.js"></script>
+  <script src="js/logs.js"></script>
+</body>
+</html>

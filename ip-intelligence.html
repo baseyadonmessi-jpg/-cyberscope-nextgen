@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b18">
+  <title>IP Intelligence | CYBERSCOPE NEXT GEN</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .ip-page {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .ip-panel {
+      margin-top: 24px;
+      padding: 28px;
+      background: rgba(20, 24, 48, .85);
+      border: 1px solid rgba(145, 110, 255, .25);
+      border-radius: 20px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, .18);
+    }
+
+    .ip-form {
+      display: flex;
+      gap: 12px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .ip-form input {
+      flex: 1;
+      min-width: 180px;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #41476b;
+      background: #0b1023;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .ip-form button {
+      padding: 15px 22px;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(110deg, #7655ff, #347eff);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .ip-form button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .ip-status {
+      margin-top: 16px;
+      color: #b9c3e8;
+      overflow-wrap: anywhere;
+    }
+
+    .ip-results {
+      display: none;
+      margin-top: 24px;
+    }
+
+    .ip-results.visible {
+      display: block;
+    }
+
+    .ip-badge {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 30px;
+      background: rgba(117, 85, 255, .18);
+      color: #c9bbff;
+      border: 1px solid rgba(145, 110, 255, .3);
+    }
+
+    .ip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .ip-item {
+      padding: 16px;
+      background: #0c1228;
+      border: 1px solid #252d4b;
+      border-radius: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .ip-item small {
+      display: block;
+      color: #9ba8d0;
+      margin-bottom: 8px;
+    }
+
+    .ip-item strong {
+      color: #f1f3ff;
+    }
+
+    .ip-recommendations {
+      padding-left: 22px;
+      line-height: 1.8;
+      color: #d1d8f5;
+    }
+
+    .ip-back {
+      display: inline-block;
+      margin-top: 22px;
+      color: #bcaeff;
+    }
+
+    .ip-note {
+      color: #aab5d8;
+      font-size: .9rem;
+      line-height: 1.6;
+      margin-top: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">C</div>
+        <div>
+          <strong>CYBERSCOPE</strong>
+          <span>NEXT GEN <i>●</i></span>
+        </div>
+      </div>
+
+      <div class="menu-label">PLATEFORME</div>
+      <nav>
+        <a class="nav-link" href="index.html">◈ Tableau de bord</a>
+        <a class="nav-link" href="logs.html">▦ Analyse des journaux</a>
+        <a class="nav-link active" href="ip-intelligence.html">⌘ IP Intelligence</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="ip-page">
+        <div class="eyebrow">CENTRE D'INVESTIGATION</div>
+        <h1>IP Intelligence</h1>
+        <p>Examine les propriétés techniques d'une adresse IPv4 ou IPv6.</p>
+
+        <section class="ip-panel">
+          <h2>Analyse d'adresse IP</h2>
+          <p>Saisis une adresse pour obtenir sa classification réseau.</p>
+
+          <form id="ipForm" class="ip-form">
+            <input
+              id="ipInput"
+              name="ip"
+              type="text"
+              placeholder="Exemple : 8.8.8.8"
+              autocomplete="off"
+              spellcheck="false"
+              required
+              maxlength="100"
+              aria-label="Adresse IP à analyser"
+            >
+            <button id="analyzeButton" type="submit">Analyser l'adresse</button>
+          </form>
+
+          <div id="ipStatus" class="ip-status" role="status" aria-live="polite">
+            En attente d'une adresse IP.
+          </div>
+
+          <div id="ipResults" class="ip-results">
+            <h3>Résultat de l'analyse</h3>
+            <p><span id="ipBadge" class="ip-badge"></span></p>
+
+            <div class="ip-grid">
+              <div class="ip-item">
+                <small>Adresse examinée</small>
+                <strong id="resultAddress">—</strong>
+              </div>
+              <div class="ip-item">
+                <small>Version IP</small>
+                <strong id="resultVersion">—</strong>
+              </div>
+              <div class="ip-item">
+                <small>Adresse publique</small>
+                <strong id="resultGlobal">—</strong>
+              </div>
+              <div class="ip-item">
+                <small>Adresse privée</small>
+                <strong id="resultPrivate">—</strong>
+              </div>
+              <div class="ip-item">
+                <small>Boucle locale</small>
+                <strong id="resultLoopback">—</strong>
+              </div>
+              <div class="ip-item">
+                <small>Adresse réservée</small>
+                <strong id="resultReserved">—</strong>
+              </div>
+            </div>
+
+            <h3>Recommandations</h3>
+            <ul id="ipRecommendations" class="ip-recommendations"></ul>
+
+            <button id="downloadReport" type="button" class="primary-button">
+              Télécharger le rapport JSON
+            </button>
+          </div>
+
+          <p class="ip-note">
+            Limite : cette analyse vérifie le format et les propriétés réseau
+            de l'adresse. Elle ne confirme pas la réputation, l'identité du
+            propriétaire ni l'activité réelle d'une adresse IP.
+          </p>
+        </section>
+
+        <a class="ip-back" href="index.html">← Retour au tableau de bord</a>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/history.js"></script>
+  <script src="js/ip-intelligence.js"></script>
+</body>
+</html>

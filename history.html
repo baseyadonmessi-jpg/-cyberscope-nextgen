@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070b18">
+  <title>Historique | CYBERSCOPE NEXT GEN</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .history-wrap{max-width:1100px;margin:30px auto;padding:20px}
+    .history-head{padding:25px;border:1px solid #245b9b;border-radius:18px;background:linear-gradient(135deg,#101b37,#101027);margin-bottom:20px}
+    .history-head h1{margin:0 0 8px;color:#75dcff}
+    .history-tools{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+    .history-tools input,.history-tools select{flex:1;min-width:170px;padding:12px;background:#0a1020;color:#eef6ff;border:1px solid #28517d;border-radius:10px}
+    .history-btn{padding:11px 15px;border:1px solid #2b8cc5;border-radius:10px;background:#102a49;color:#e7f7ff;cursor:pointer}
+    .history-btn:hover{background:#16436b}
+    .history-list{display:grid;gap:12px}
+    .history-item{padding:17px;border:1px solid #253b5b;border-radius:13px;background:#0c1324;overflow-wrap:anywhere}
+    .history-item h3{margin:0 0 8px;color:#a8eaff}
+    .history-meta{font-size:.86rem;color:#9eb4ce;margin-bottom:10px}
+    .history-item pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:240px;overflow:auto;color:#c8d8ef;background:#080d18;padding:12px;border-radius:8px}
+    .history-empty{padding:25px;text-align:center;border:1px dashed #355273;border-radius:12px;color:#aabbd1}
+    .history-count{color:#75dcff}
+    .history-warning{font-size:.9rem;color:#c5d4e8}
+    .history-back{color:#80dfff}
+  </style>
+</head>
+<body>
+  <main class="history-wrap">
+    <section class="history-head">
+      <a class="history-back" href="index.html">← Retour au tableau de bord</a>
+      <h1>HISTORIQUE CENTRALISÉ</h1>
+      <p>Retrouve les analyses enregistrées sur ce navigateur.</p>
+      <p class="history-warning">Les données sont stockées localement dans ton navigateur. Elles ne sont pas partagées automatiquement entre appareils.</p>
+      <strong class="history-count" id="historyCount">0 analyse</strong>
+    </section>
+
+    <section class="history-tools" aria-label="Recherche et filtres">
+      <input id="historySearch" type="search" placeholder="Rechercher une adresse, un titre…">
+      <select id="historyType" aria-label="Filtrer par type">
+        <option value="all">Tous les types</option>
+        <option value="json">Analyse JSON</option>
+        <option value="logs">Analyse des journaux</option>
+        <option value="ip">Analyse IP</option>
+      </select>
+      <button class="history-btn" id="historyRefresh" type="button">Actualiser</button>
+      <button class="history-btn" id="historyExport" type="button">Exporter JSON</button>
+    </section>
+
+    <section id="historyList" class="history-list" aria-live="polite"></section>
+  </main>
+  <script src="js/history.js"></script>
+  <script>
+    "use strict";
+    const list = document.getElementById("historyList");
+    const search = document.getElementById("historySearch");
+    const typeFilter = document.getElementById("historyType");
+    const count = document.getElementById("historyCount");
+
+    function safeText(value) {
+      return String(value ?? "");
+    }
+
+    function renderHistory() {
+      const all = window.CyberScopeHistory.read();
+      const query = search.value.trim().toLowerCase();
+      const type = typeFilter.value;
+      const filtered = all.filter(entry => {
+        const matchesType = type === "all" || entry.type === type;
+        const searchable = [
+          entry.title,
+          entry.type,
+          entry.date,
+          JSON.stringify(entry.details || {})
+        ].join(" ").toLowerCase();
+        return matchesType && searchable.includes(query);
+      });
+
+      count.textContent = `${filtered.length} analyse${filtered.length > 1 ? "s" : ""} affichée${filtered.length > 1 ? "s" : ""} / ${all.length}`;
+
+      list.replaceChildren();
+
+      if (!filtered.length) {
+        const empty = document.createElement("div");
+        empty.className = "history-empty";
+        empty.textContent = all.length
+          ? "Aucun résultat. Essaie un autre mot ou filtre."
+          : "Aucune analyse enregistrée pour le moment. Lance une analyse depuis le tableau de bord, la page IP ou la page des journaux.";
+        list.appendChild(empty);
+        return;
+      }
+
+      for (const entry of filtered) {
+        const card = document.createElement("article");
+        card.className = "history-item";
+
+        const heading = document.createElement("h3");
+        heading.textContent = entry.title || "Analyse sans titre";
+
+        const meta = document.createElement("div");
+        meta.className = "history-meta";
+        const date = new Date(entry.date);
+        meta.textContent = `${entry.type.toUpperCase()} · ${
+          Number.isNaN(date.getTime()) ? entry.date : date.toLocaleString("fr-FR")
+        }`;
+
+        const details = document.createElement("pre");
+        details.textContent = JSON.stringify(entry.details || {}, null, 2);
+
+        card.append(heading, meta, details);
+        list.appendChild(card);
+      }
+    }
+
+    search.addEventListener("input", renderHistory);
+    typeFilter.addEventListener("change", renderHistory);
+    document.getElementById("historyRefresh").addEventListener("click", renderHistory);
+    document.getElementById("historyExport").addEventListener("click", () => {
+      const data = window.CyberScopeHistory.read();
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "cyberscope-historique.json";
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+
+    renderHistory();
+  </script>
+</body>
+</html>

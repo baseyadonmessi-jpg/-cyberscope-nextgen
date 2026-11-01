@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b18">
+  <title>CYBERSCOPE NEXT GEN</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">C</div>
+        <div>
+          <strong>CYBERSCOPE</strong>
+          <span>NEXT GEN <i>●</i></span>
+        </div>
+      </div>
+
+      <div class="menu-label">PLATEFORME</div>
+      <nav>
+        <a class="nav-link active" href="#dashboard">◈ Tableau de bord</a>
+        <a class="nav-link" href="#json">▦ Analyseur JSON</a>
+        <a class="nav-link" href="#email">✉ Email Intelligence</a>
+        <a class="nav-link" href="ip-intelligence.html">⌘ IP Intelligence</a>
+        <a class="nav-link" href="logs.html">▤ Analyse des journaux</a>
+        <a class="nav-link" href="#threats">⬡ Threat Intelligence</a>
+        <a class="nav-link" href="#reports">▤ Rapports</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="status-dot"></div>
+        <div>
+          <strong>Mode local</strong>
+          <span>Interface prête</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="dashboard">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">CENTRE DE CYBERSÉCURITÉ</div>
+          <h1>Tableau de bord <span>●</span></h1>
+          <p>Analyse, surveillance et investigation numérique.</p>
+        </div>
+        <div class="top-badge"><span></span> ENVIRONNEMENT LOCAL</div>
+      </header>
+
+      <section class="welcome-panel">
+        <div class="welcome-text">
+          <div class="eyebrow">CYBERSÉCURITÉ INTELLIGENTE</div>
+          <h2>Comprendre les données.<br><span>Détecter les risques.</span></h2>
+          <p>Un espace de travail pour analyser des données et examiner les indicateurs de sécurité.</p>
+          <a href="#json" class="primary-button">Ouvrir l'analyseur ↗</a>
+        </div>
+<div class="messi-visual">
+  <div class="messi-overlay"></div>
+  <div class="messi-name">MESSI</div>
+  <div class="messi-caption">CYBERSECURITY • NEXT GEN</div>
+</div>        <div class="grid-decoration"></div>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-icon purple">▦</div>
+          <span>Fichiers analysés</span>
+          <strong id="filesCount">0</strong>
+          <small>Depuis cette session</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon blue">⌕</div>
+          <span>Éléments examinés</span>
+          <strong id="itemsCount">0</strong>
+          <small>Données importées</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon orange">⚠</div>
+          <span>Alertes détectées</span>
+          <strong id="alertsCount">0</strong>
+          <small>À vérifier</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon green">✓</div>
+          <span>État du système</span>
+          <strong class="healthy">Prêt</strong>
+          <small>Analyse locale activée</small>
+        </article>
+      </section>
+
+      <section class="workspace" id="json">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">OUTIL 01</div>
+            <h2>Analyseur JSON</h2>
+            <p>Importe un fichier JSON ou colle des données pour commencer.</p>
+          </div>
+          <span class="tool-tag">LOCAL · JSON</span>
+        </div>
+
+        <div class="analyzer-grid">
+          <div class="input-panel">
+            <label for="jsonInput">DONNÉES JSON</label>
+            <textarea id="jsonInput" spellcheck="false" placeholder='Colle ici un JSON, par exemple :
+{
+  "service": "Demo",
+  "status": "review",
+  "risk": "medium"
+}'></textarea>
+            <div class="input-actions">
+              <label class="file-button" for="jsonFile">＋ Importer un fichier</label>
+              <input id="jsonFile" type="file" accept=".json,application/json" hidden>
+              <button id="analyzeButton" class="primary-button" type="button">Analyser les données ↗</button>
+            </div>
+            <p class="privacy-note">🔒 Analyse effectuée dans le navigateur. Le contenu n'est pas envoyé à un serveur par cette page.</p>
+          </div>
+
+          <div class="results-panel">
+            <div class="results-heading">
+              <h3>Résultats de l'analyse</h3>
+              <span id="resultStatus" class="result-status">EN ATTENTE</span>
+            </div>
+            <div id="summary" class="summary-box">
+              <div class="empty-icon">⌕</div>
+              <strong>Aucune analyse</strong>
+              <p>Importe un fichier ou colle un JSON, puis lance l'analyse.</p>
+            </div>
+            <div id="alertsList" class="alerts-list"></div>
+          </div>
+        </div>
+
+        <div class="table-panel">
+          <div class="table-heading">
+            <div>
+              <h3>Explorateur de données</h3>
+              <p>Recherche dans les clés et les valeurs.</p>
+            </div>
+            <input id="searchInput" type="search" placeholder="Rechercher..." aria-label="Rechercher dans les résultats">
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th>CHEMIN</th><th>VALEUR</th><th>TYPE</th></tr>
+              </thead>
+              <tbody id="dataTable">
+                <tr><td colspan="3" class="empty-cell">Les résultats apparaîtront ici.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="modules-section">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">CENTRE D'INVESTIGATION</div>
+            <h2>Modules de sécurité</h2>
+            <p>Les prochains modules de la plateforme.</p>
+          </div>
+        </div>
+        <div class="modules-grid">
+          <article class="module-card" id="email">
+            <div class="module-icon purple">✉</div>
+            <span class="module-state">À DÉVELOPPER</span>
+            <h3>Email Intelligence</h3>
+            <p>Examiner les domaines, la syntaxe et les indicateurs suspects.</p>
+          </article>
+          <article class="module-card" id="network">
+            <div class="module-icon blue">⌘</div>
+            <span class="module-state">À DÉVELOPPER</span>
+            <h3>IP Intelligence</h3>
+            <p>Examiner les adresses IP publiques et les informations réseau accessibles.</p>
+          </article>
+          <article class="module-card" id="threats">
+            <div class="module-icon orange">⬡</div>
+            <span class="module-state">À DÉVELOPPER</span>
+            <h3>Threat Intelligence</h3>
+            <p>Organiser les indicateurs de menaces et les alertes à vérifier.</p>
+          </article>
+          <article class="module-card" id="reports">
+            <div class="module-icon green">▤</div>
+            <span class="module-state">À DÉVELOPPER</span>
+            <h3>Rapports d'analyse</h3>
+            <p>Préparer des rapports et exporter les résultats d'investigation.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <span>CYBERSCOPE NEXT GEN</span>
+        <span>Outil d'analyse défensive · Version 0.1</span>
+      </footer>
+    
+<section class="assistant-panel" id="defensive-assistant">
+  <div class="assistant-heading">
+    <span class="eyebrow">CYBERSCOPE INTELLIGENCE</span>
+    <h2>Assistant défensif</h2>
+    <p>Comprends une alerte et découvre les vérifications recommandées.</p>
+  </div>
+
+  <form id="assistant-form">
+    <label for="assistant-type">Type d'alerte</label>
+    <select id="assistant-type" required>
+      <option value="repeated_authentication_failures">Échecs de connexion répétés</option>
+      <option value="security_log_keyword">Erreur détectée dans un journal</option>
+      <option value="unknown">Autre alerte</option>
+    </select>
+
+    <label for="assistant-severity">Priorité détectée</label>
+    <select id="assistant-severity">
+      <option value="high">Élevée</option>
+      <option value="medium" selected>Moyenne</option>
+      <option value="low">Faible</option>
+    </select>
+
+    <label for="assistant-reason">Détails observés</label>
+    <textarea id="assistant-reason" rows="3" maxlength="1000"
+      placeholder="Décris l'alerte observée…" required></textarea>
+
+    <button class="primary-button" type="submit">Expliquer l'alerte</button>
+  </form>
+
+  <p id="assistant-status" role="status" aria-live="polite"></p>
+  <div id="assistant-result" class="assistant-result" hidden></div>
+  <p class="assistant-disclaimer">
+    Analyse basée sur des règles locales : une alerte n'est pas une preuve d'attaque.
+  </p>
+</section>
+
+</main>
+  </div>
+
+  <script src="js/history.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/modules.js"></script>
+  <script src="js/dashboard.js"></script>
+<script src="js/assistant.js"></script>
+</body>
+</html>
