@@ -10,3 +10,5 @@ backups/
 reports/
 samples/
 __pycache__/
+backups/
+logs/
